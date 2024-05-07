@@ -3,20 +3,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Toggle, useColorMode } from "deventds2";
 import { css } from "@emotion/react";
+import { useCanvasStore } from "../store";
 
 function InputText({
+  id,
   x = 0,
   y = 0,
   fontSize = 24,
   fontWeight = 500,
   ratio = 1,
 }: {
+  id: number;
   x?: number;
   y?: number;
   fontSize?: number;
   fontWeight?: number;
   ratio?: number;
 }) {
+  const updateAsset = useCanvasStore((state: any) => state.updateAsset);
+
   const [inputWidth, setInputWidth] = useState(`${700 * ratio}px`);
   const [value, setValue] = useState("");
 
@@ -24,18 +29,32 @@ function InputText({
     setValue(e.target.value);
   };
 
-  useEffect(() => {
-    setInputWidth(`${(value.length + 1) * 70 * ratio}px`);
-    if (value.length == 0) {
-      setInputWidth(`250px`);
-    }
-  }, [value]);
-
-  useEffect(() => {
+  const changeDynamicInputWidth = () => {
     setInputWidth(`${(value.length + 1) * 70 * ratio}px`);
     if (value.length == 0) {
       setInputWidth(`${700 * ratio}px`);
     }
+  };
+
+  useEffect(() => {
+    changeDynamicInputWidth();
+
+    updateAsset(id, {
+      id: id,
+      location: {
+        x: x,
+        y: y,
+      },
+      font: {
+        size: fontSize,
+        weight: fontWeight,
+      },
+      value: value,
+    });
+  }, [value]);
+
+  useEffect(() => {
+    changeDynamicInputWidth();
   }, [ratio]);
 
   return (

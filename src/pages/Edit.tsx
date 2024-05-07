@@ -7,12 +7,18 @@ import Canvas from "../components/Canvas";
 import Footer from "../components/Footer";
 import DarkmodeToggle from "../components/DarkmodeToggle";
 import IconButton from "../components/IconButton";
+import { useCanvasStore } from "../store";
 
 function Edit() {
   const [isOpen, setIsOpen] = useState(false);
+  const assetsList = useCanvasStore((state: any) => state.assets);
 
   const handleClickSetting = () => {
     setIsOpen(true);
+  };
+
+  const handleClickExport = () => {
+    console.log(assetsList);
   };
 
   return (
@@ -40,7 +46,7 @@ function Edit() {
             zIndex: "9999",
           })}
         >
-          <IconButton>download</IconButton>
+          <IconButton onClick={handleClickExport}>download</IconButton>
         </div>
       </div>
       <div

@@ -4,9 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, useColorMode } from "deventds2";
 import { css } from "@emotion/react";
 import InputText from "./Input";
+import { useCanvasStore } from "../store";
+import { AssetType } from "../@types/asset";
 
 //NOTE: 텍스트 입력 폼 추가
 //NOTE: 텍스트 입력 폼을 기준으로 canvas에 그리고 이미지 다운로드
+//NOTE: Textarea 입력 추가
+//NOTE: 페이지 구분
+//NOTE: 템플릿 작성
 
 function Canvas() {
   const [colorMode, setColorMode] = useColorMode();
@@ -17,6 +22,8 @@ function Canvas() {
   });
   const [canvasRatio, setCanvasRatio] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const assetsList = useCanvasStore((state: any) => state.assets);
+  const appendAsset = useCanvasStore((state: any) => state.appendAsset);
 
   const handleWindowResize = () => {
     setWindowSize({
@@ -42,6 +49,32 @@ function Canvas() {
   useEffect(() => {
     setRatio();
 
+    appendAsset({
+      id: Math.random(),
+      location: {
+        x: 75,
+        y: 200,
+      },
+      font: {
+        size: 72,
+        weight: 700,
+      },
+      value: "",
+    });
+
+    appendAsset({
+      id: Math.random(),
+      location: {
+        x: 75,
+        y: 350,
+      },
+      font: {
+        size: 48,
+        weight: 500,
+      },
+      value: "",
+    });
+
     window.addEventListener("resize", handleWindowResize);
   }, []);
 
@@ -65,21 +98,16 @@ function Canvas() {
           height: windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
         })}
       ></canvas>
-      <InputText
-        x={75}
-        y={200}
-        fontSize={72}
-        fontWeight={700}
-        ratio={canvasRatio}
-      ></InputText>
-
-      <InputText
-        x={75}
-        y={350}
-        fontSize={48}
-        fontWeight={500}
-        ratio={canvasRatio}
-      ></InputText>
+      {assetsList.map((asset: AssetType) => (
+        <InputText
+          id={asset.id}
+          x={asset.location.x}
+          y={asset.location.y}
+          fontSize={asset.font.size}
+          fontWeight={asset.font.weight}
+          ratio={canvasRatio}
+        ></InputText>
+      ))}
     </div>
   );
 }
