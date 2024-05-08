@@ -18,6 +18,8 @@ function Footer() {
 
     appendAsset(assetsList.length, {
       id: Math.random(),
+      type: "textarea",
+
       location: {
         x: 75,
         y: 200,
@@ -28,6 +30,10 @@ function Footer() {
       },
       value: "",
     });
+  };
+
+  const handleClickShow = () => {
+    console.log(assetsList);
   };
 
   return (
@@ -47,6 +53,7 @@ function Footer() {
       })}
     >
       <Button onClick={handleClickAddPage}>Add Page</Button>
+      <Button onClick={handleClickShow}>Soow</Button>
     </div>
   );
 }

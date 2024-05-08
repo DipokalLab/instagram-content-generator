@@ -5,8 +5,6 @@ import { Button, Modal, Toggle, useColorMode } from "deventds2";
 import { css } from "@emotion/react";
 
 function IconButton({ onClick, children }: { onClick?: any; children?: any }) {
-  const [colorMode, setColorMode] = useColorMode();
-
   return (
     <span
       className="material-symbols-outlined"

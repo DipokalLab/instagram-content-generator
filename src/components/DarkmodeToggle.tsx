@@ -12,7 +12,7 @@ function DarkmodeToggle() {
       checked={colorMode == "light" ? false : true}
       onClick={() => setColorMode(colorMode == "light" ? "dark" : "light")}
     >
-      다크모드 on/off
+      DarkMode on/off
     </Toggle>
   );
 }

@@ -1,31 +1,62 @@
 import { AssetType } from "../@types/asset";
 
-const render = {
-  canvasToImage: (asset: AssetType[]) => {
-    const canvas = document.createElement("canvas");
-    const ctx: any = canvas.getContext("2d");
-    canvas.height = 1000;
-    canvas.width = 1000;
+class Render {
+  canvas: HTMLCanvasElement;
+  ctx: any;
+  constructor() {
+    this.canvas = document.createElement("canvas");
+    this.ctx = this.canvas.getContext("2d");
 
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.canvas.height = 1000;
+    this.canvas.width = 1000;
+  }
+
+  public canvasToImage = (asset: AssetType[]) => {
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     for (let index = 0; index < asset.length; index++) {
       const item = asset[index];
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `${item.font.weight} ${item.font.size}px Pretendard`;
-      ctx.fillText(
-        item.value,
-        item.location.x,
-        item.location.y + item.font.size / 1.5
-      );
+
+      if (item.type == "text") {
+        this.renderText(item);
+      } else if (item.type == "textarea") {
+        this.renderTextArea(item);
+      }
     }
 
-    const image = canvas
+    const image = this.canvas
       .toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
     window.location.href = image;
-  },
-};
+  };
 
-export { render };
+  private renderText = (item: AssetType) => {
+    this.ctx.fillStyle = "#ffffff";
+    this.ctx.font = `${item.font.weight} ${item.font.size}px Pretendard`;
+    this.ctx.fillText(
+      item.value,
+      item.location.x,
+      item.location.y + item.font.size / 1.5
+    );
+  };
+
+  private renderTextArea = (item: AssetType) => {
+    const splitedValue = item.value.split("\n");
+    const lineHeight = 40;
+    for (let index = 0; index < splitedValue.length; index++) {
+      const atomValue = splitedValue[index];
+      let x = item.location.x;
+      let y =
+        item.location.y +
+        (item.font.size / 1.5) * (index + 1) +
+        lineHeight * index;
+
+      this.ctx.fillStyle = "#ffffff";
+      this.ctx.font = `${item.font.weight} ${item.font.size}px Pretendard`;
+      this.ctx.fillText(atomValue, x, y);
+    }
+  };
+}
+
+export { Render };

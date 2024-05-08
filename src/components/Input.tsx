@@ -44,6 +44,7 @@ function InputText({
 
     updateAsset(index, id, {
       id: id,
+      type: "text",
       location: {
         x: x,
         y: y,
@@ -74,11 +75,116 @@ function InputText({
         fontSize: `${fontSize * ratio}px`,
         fontWeight: fontWeight,
       })}
-      placeholder="텍스트를 입력하세요"
+      placeholder="Input Text.."
       value={value}
       onInput={handleInput}
     ></input>
   );
 }
 
-export default InputText;
+function InputTextArea({
+  index = 0,
+  id,
+  x = 0,
+  y = 0,
+  fontSize = 24,
+  fontWeight = 500,
+  ratio = 1,
+}: {
+  index: number;
+
+  id: number;
+  x?: number;
+  y?: number;
+  fontSize?: number;
+  fontWeight?: number;
+  ratio?: number;
+}) {
+  const updateAsset = useCanvasStore((state: any) => state.updateAsset);
+
+  const [inputWidth, setInputWidth] = useState(`${700 * ratio}px`);
+  const [inputHeight, setInputHeight] = useState(`200px`);
+
+  const [value, setValue] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleInput = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const updateTextareaHeight = () => {
+    const textarea: any = textareaRef.current;
+    textarea.style.height = "auto";
+
+    const height = Number(textarea.scrollHeight);
+    console.log(textarea.scrollHeight);
+    if (height < 50) {
+      setInputHeight(`50px`);
+    } else {
+      setInputHeight(`${height}px`);
+    }
+  };
+
+  useEffect(() => {
+    updateTextareaHeight();
+    updateAsset(index, id, {
+      id: id,
+      type: "textarea",
+      location: {
+        x: x,
+        y: y,
+      },
+      font: {
+        size: fontSize,
+        weight: fontWeight,
+      },
+      value: value,
+    });
+  }, [value]);
+
+  return (
+    <>
+      <textarea
+        css={css({
+          position: "absolute",
+          width: inputWidth,
+          height: inputHeight,
+          top: y * ratio,
+          left: x * ratio,
+          backgroundColor: "transparent",
+          border: "none",
+          outline: "none",
+          color: "#ffffff",
+          fontSize: `${fontSize * ratio}px`,
+          fontWeight: fontWeight,
+          resize: "none",
+        })}
+        placeholder="Input Text.."
+        value={value}
+        onChange={handleInput}
+        onInput={handleInput}
+      ></textarea>
+
+      <textarea
+        css={css({
+          position: "absolute",
+          visibility: "hidden",
+          width: inputWidth,
+          top: y * ratio,
+          left: x * ratio,
+          backgroundColor: "transparent",
+          border: "none",
+          outline: "none",
+          color: "#ffffff",
+          fontSize: `${fontSize * ratio}px`,
+          fontWeight: fontWeight,
+        })}
+        ref={textareaRef}
+        placeholder="Input Text.."
+        value={value}
+      ></textarea>
+    </>
+  );
+}
+
+export { InputText, InputTextArea };

@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import DarkmodeToggle from "../components/DarkmodeToggle";
 import IconButton from "../components/IconButton";
 import { useCanvasStore } from "../store";
-import { render } from "../utils/render";
+import { Render } from "../utils/render";
 
 function Edit() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +24,7 @@ function Edit() {
       if (count <= assetsList.length) {
         try {
           const page = assetsList[count];
+          const render = new Render();
           render.canvasToImage(page);
           count += 1;
         } catch (error) {}

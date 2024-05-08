@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, useColorMode } from "deventds2";
 import { css } from "@emotion/react";
-import InputText from "./Input";
+import { InputText, InputTextArea } from "./Input";
 import { useCanvasStore } from "../store";
 import { AssetType } from "../@types/asset";
 
@@ -50,6 +50,7 @@ function Canvas() {
 
     appendAsset(index, {
       id: Math.random(),
+      type: "text",
       location: {
         x: 75,
         y: 200,
@@ -63,6 +64,7 @@ function Canvas() {
 
     appendAsset(index, {
       id: Math.random(),
+      type: "text",
       location: {
         x: 75,
         y: 350,
@@ -112,15 +114,11 @@ function Canvas() {
 
             {page.map((asset: AssetType) => (
               <>
-                <InputText
+                <AssetSwitch
                   index={pageIndex}
-                  id={asset.id}
-                  x={asset.location.x}
-                  y={asset.location.y}
-                  fontSize={asset.font.size}
-                  fontWeight={asset.font.weight}
-                  ratio={canvasRatio}
-                ></InputText>
+                  asset={asset}
+                  canvasRatio={canvasRatio}
+                ></AssetSwitch>
               </>
             ))}
           </>
@@ -128,6 +126,44 @@ function Canvas() {
       ))}
     </div>
   );
+}
+
+function AssetSwitch({
+  asset,
+  canvasRatio,
+  index,
+}: {
+  asset: AssetType;
+  canvasRatio: number;
+  index: number;
+}) {
+  if (asset.type == "text") {
+    return (
+      <InputText
+        index={index}
+        id={asset.id}
+        x={asset.location.x}
+        y={asset.location.y}
+        fontSize={asset.font.size}
+        fontWeight={asset.font.weight}
+        ratio={canvasRatio}
+      ></InputText>
+    );
+  } else if (asset.type == "textarea") {
+    return (
+      <InputTextArea
+        index={index}
+        id={asset.id}
+        x={asset.location.x}
+        y={asset.location.y}
+        fontSize={asset.font.size}
+        fontWeight={asset.font.weight}
+        ratio={canvasRatio}
+      ></InputTextArea>
+    );
+  }
+
+  return <></>;
 }
 
 export default Canvas;
