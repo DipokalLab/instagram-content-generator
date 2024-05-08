@@ -3,9 +3,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, useColorMode } from "deventds2";
 import { css } from "@emotion/react";
+import { useCanvasStore } from "../store";
 
 function Footer() {
   const [colorMode, setColorMode] = useColorMode();
+  const addPage = useCanvasStore((state: any) => state.addPage);
+  const assetsList = useCanvasStore((state: any) => state.assets);
+  const appendAsset = useCanvasStore((state: any) => state.appendAsset);
+
+  const handleClickAddPage = () => {
+    addPage();
+
+    console.log(assetsList.length);
+
+    appendAsset(assetsList.length, {
+      id: Math.random(),
+      location: {
+        x: 75,
+        y: 200,
+      },
+      font: {
+        size: 72,
+        weight: 700,
+      },
+      value: "",
+    });
+  };
 
   return (
     <div
@@ -23,7 +46,7 @@ function Footer() {
         }`,
       })}
     >
-      sdfsd
+      <Button onClick={handleClickAddPage}>Add Page</Button>
     </div>
   );
 }

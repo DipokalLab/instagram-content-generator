@@ -18,6 +18,7 @@ function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const assetsList = useCanvasStore((state: any) => state.assets);
   const appendAsset = useCanvasStore((state: any) => state.appendAsset);
+  const addPage = useCanvasStore((state: any) => state.addPage);
 
   const handleWindowResize = () => {
     setWindowSize({
@@ -43,7 +44,11 @@ function Canvas() {
   useEffect(() => {
     setRatio();
 
-    appendAsset({
+    const index = 0;
+
+    //addPage();
+
+    appendAsset(index, {
       id: Math.random(),
       location: {
         x: 75,
@@ -56,7 +61,7 @@ function Canvas() {
       value: "",
     });
 
-    appendAsset({
+    appendAsset(index, {
       id: Math.random(),
       location: {
         x: 75,
@@ -75,32 +80,51 @@ function Canvas() {
   return (
     <div
       css={css({
-        position: "relative",
+        padding: "1.5rem",
+        display: "flex",
+        flexDirection: "row",
+        overflowX: "scroll",
+        gap: "1rem",
       })}
     >
-      <canvas
-        ref={canvasRef}
-        width={1000}
-        height={1000}
-        onMouseDown={handleMouseDown}
-        css={css({
-          backgroundColor: "#000000",
-          borderRadius: "0.5rem",
-          border: `0.1rem solid ${
-            colorMode == "light" ? "#c6c8cf" : "#24262b"
-          }`,
-          height: windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
-        })}
-      ></canvas>
-      {assetsList.map((asset: AssetType) => (
-        <InputText
-          id={asset.id}
-          x={asset.location.x}
-          y={asset.location.y}
-          fontSize={asset.font.size}
-          fontWeight={asset.font.weight}
-          ratio={canvasRatio}
-        ></InputText>
+      {assetsList.map((page: AssetType[], pageIndex: number) => (
+        <div
+          css={css({
+            position: "relative",
+          })}
+        >
+          <>
+            <canvas
+              ref={canvasRef}
+              width={1000}
+              height={1000}
+              onMouseDown={handleMouseDown}
+              css={css({
+                backgroundColor: "#000000",
+                borderRadius: "0.5rem",
+                border: `0.1rem solid ${
+                  colorMode == "light" ? "#c6c8cf" : "#24262b"
+                }`,
+                height:
+                  windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
+              })}
+            ></canvas>
+
+            {page.map((asset: AssetType) => (
+              <>
+                <InputText
+                  index={pageIndex}
+                  id={asset.id}
+                  x={asset.location.x}
+                  y={asset.location.y}
+                  fontSize={asset.font.size}
+                  fontWeight={asset.font.weight}
+                  ratio={canvasRatio}
+                ></InputText>
+              </>
+            ))}
+          </>
+        </div>
       ))}
     </div>
   );

@@ -6,6 +6,7 @@ import { css } from "@emotion/react";
 import { useCanvasStore } from "../store";
 
 function InputText({
+  index = 0,
   id,
   x = 0,
   y = 0,
@@ -13,6 +14,8 @@ function InputText({
   fontWeight = 500,
   ratio = 1,
 }: {
+  index: number;
+
   id: number;
   x?: number;
   y?: number;
@@ -39,7 +42,7 @@ function InputText({
   useEffect(() => {
     changeDynamicInputWidth();
 
-    updateAsset(id, {
+    updateAsset(index, id, {
       id: id,
       location: {
         x: x,

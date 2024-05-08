@@ -19,8 +19,18 @@ function Edit() {
   };
 
   const handleClickExport = () => {
-    console.log(assetsList);
-    render.canvasToImage(assetsList);
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count <= assetsList.length) {
+        try {
+          const page = assetsList[count];
+          render.canvasToImage(page);
+          count += 1;
+        } catch (error) {}
+      } else {
+        clearInterval(interval);
+      }
+    }, 1500);
   };
 
   return (
