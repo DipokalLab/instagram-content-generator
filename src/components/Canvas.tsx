@@ -7,12 +7,6 @@ import InputText from "./Input";
 import { useCanvasStore } from "../store";
 import { AssetType } from "../@types/asset";
 
-//NOTE: 텍스트 입력 폼 추가
-//NOTE: 텍스트 입력 폼을 기준으로 canvas에 그리고 이미지 다운로드
-//NOTE: Textarea 입력 추가
-//NOTE: 페이지 구분
-//NOTE: 템플릿 작성
-
 function Canvas() {
   const [colorMode, setColorMode] = useColorMode();
 
