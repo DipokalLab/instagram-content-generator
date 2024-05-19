@@ -39,7 +39,7 @@ function Canvas() {
     setCanvasRatio(ratio);
   };
 
-  const putTextEditerOnCanvas = () => {};
+  const putTextEditerOnCanvas = () => { };
 
   useEffect(() => {
     setRatio();
@@ -104,9 +104,8 @@ function Canvas() {
               css={css({
                 backgroundColor: "#000000",
                 borderRadius: "0.5rem",
-                border: `0.1rem solid ${
-                  colorMode == "light" ? "#c6c8cf" : "#24262b"
-                }`,
+                border: `0.1rem solid ${colorMode == "light" ? "#c6c8cf" : "#24262b"
+                  }`,
                 height:
                   windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
               })}
@@ -124,6 +123,8 @@ function Canvas() {
           </>
         </div>
       ))}
+
+      <AddPageBox windowSize={windowSize}></AddPageBox>
     </div>
   );
 }
@@ -164,6 +165,70 @@ function AssetSwitch({
   }
 
   return <></>;
+}
+
+function AddPageBox({ windowSize }: { windowSize: any }) {
+  const [colorMode, setColorMode] = useColorMode();
+  const addPage = useCanvasStore((state: any) => state.addPage);
+  const assetsList = useCanvasStore((state: any) => state.assets);
+  const appendAsset = useCanvasStore((state: any) => state.appendAsset);
+
+  const handleClickAddPage = () => {
+    addPage();
+
+    console.log(assetsList.length);
+
+    appendAsset(assetsList.length, {
+      id: Math.random(),
+      type: "textarea",
+
+      location: {
+        x: 75,
+        y: 200,
+      },
+      font: {
+        size: 72,
+        weight: 700,
+      },
+      value: "",
+    });
+  };
+
+  return (
+    <div
+      css={css({
+        position: "relative",
+      })}
+    >
+      <div
+        onClick={handleClickAddPage}
+        css={css({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#000000",
+          borderRadius: "0.5rem",
+          border: `0.1rem solid ${colorMode == "light" ? "#c6c8cf" : "#24262b"
+            }`,
+          cursor: "pointer",
+
+          height: windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
+          width: windowSize.height > windowSize.width + 100 ? "85vw" : "70vh",
+        })}
+      >
+        <span
+          className="material-symbols-outlined"
+          css={css({
+            transition: "0.2s",
+            color: "#797b82",
+            fontSize: "2rem",
+          })}
+        >
+          add_circle
+        </span>
+      </div>
+    </div>
+  );
 }
 
 export default Canvas;

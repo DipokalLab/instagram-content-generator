@@ -115,13 +115,21 @@ function InputTextArea({
   const updateTextareaHeight = () => {
     const textarea: any = textareaRef.current;
     textarea.style.height = "auto";
+    textarea.style.width = "auto";
 
     const height = Number(textarea.scrollHeight);
-    console.log(textarea.scrollHeight);
+    const width = Number(textarea.scrollWidth);
+
     if (height < 50) {
       setInputHeight(`50px`);
     } else {
       setInputHeight(`${height}px`);
+    }
+
+    if (width < 700 * ratio) {
+      setInputWidth(`${700 * ratio}px`);
+    } else {
+      setInputWidth(`${(value.length + 1) * 70 * ratio}px`);
     }
   };
 
@@ -149,6 +157,7 @@ function InputTextArea({
           position: "absolute",
           width: inputWidth,
           height: inputHeight,
+          minWidth: `${700 * ratio}px`,
           top: y * ratio,
           left: x * ratio,
           backgroundColor: "transparent",
@@ -169,7 +178,6 @@ function InputTextArea({
         css={css({
           position: "absolute",
           visibility: "hidden",
-          width: inputWidth,
           top: y * ratio,
           left: x * ratio,
           backgroundColor: "transparent",

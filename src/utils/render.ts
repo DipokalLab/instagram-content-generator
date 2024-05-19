@@ -28,7 +28,15 @@ class Render {
     const image = this.canvas
       .toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
-    window.location.href = image;
+
+    const link = document.createElement("a");
+
+    link.download = `icg_${Math.random()}.png`;
+
+    link.href = image;
+
+    link.click();
+    //window.location.href = image;
   };
 
   private renderText = (item: AssetType) => {

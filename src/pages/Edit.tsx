@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal } from "deventds2";
-import { css } from "@emotion/react";
+import styled from '@emotion/styled'
+
 import Canvas from "../components/Canvas";
 import Footer from "../components/Footer";
 import DarkmodeToggle from "../components/DarkmodeToggle";
@@ -10,8 +11,55 @@ import IconButton from "../components/IconButton";
 import { useCanvasStore } from "../store";
 import { Render } from "../utils/render";
 
+const Center = styled.div({
+  position: "fixed",
+  left: "0",
+  top: "0",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+  height: "80%",
+  zIndex: "9998",
+})
+
+const PaddingTop = styled.div({
+  paddingTop: "1rem",
+})
+
+const Title2 = styled.h2({
+  margin: 0
+})
+
+const FixedTopLeft = styled.div({
+  position: "fixed",
+  left: "1rem",
+  zIndex: "9999",
+  alignItems: "center",
+})
+
+const FixedTopRight = styled.div({
+  position: "fixed",
+  right: "1rem",
+  zIndex: "9999",
+})
+
+
 function Edit() {
+  return (
+    <>
+      <Nav />
+      <Center>
+        <Canvas />
+      </Center>
+      <Footer />
+    </>
+  );
+}
+
+function Nav() {
   const [isOpen, setIsOpen] = useState(false);
+
   const assetsList = useCanvasStore((state: any) => state.assets);
 
   const handleClickSetting = () => {
@@ -27,7 +75,7 @@ function Edit() {
           const render = new Render();
           render.canvasToImage(page);
           count += 1;
-        } catch (error) {}
+        } catch (error) { }
       } else {
         clearInterval(interval);
       }
@@ -36,64 +84,32 @@ function Edit() {
 
   return (
     <>
-      <div
-        css={css({
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "1rem",
-        })}
-      >
-        <div
-          css={css({
-            zIndex: "9999",
-            alignItems: "center",
-          })}
-        >
-          <IconButton onClick={handleClickSetting}>settings</IconButton>
-        </div>
-        <div
-          css={css({
-            position: "fixed",
-            right: 0,
-            paddingRight: "1rem",
-            zIndex: "9999",
-          })}
-        >
-          <IconButton onClick={handleClickExport}>download</IconButton>
-        </div>
-      </div>
-      <div
-        css={css({
-          position: "fixed",
-          left: "0",
-          top: "0",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "80%",
-          zIndex: "9998",
-        })}
-      >
-        <Canvas></Canvas>
-      </div>
-      <Footer></Footer>
+      <PaddingTop>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h2 css={css({ margin: 0 })}>Instagram Content Gen</h2>
-        <DarkmodeToggle></DarkmodeToggle>
-        <div>
-          <Button
-            color="black"
-            width="100%"
-            type="fill"
-            display="flex"
-            onClick={() => setIsOpen(false)}
-          >
-            모달 닫기
-          </Button>
-        </div>
-      </Modal>
+        <FixedTopLeft>
+          <IconButton onClick={handleClickSetting}>settings</IconButton>
+        </FixedTopLeft>
+
+        <FixedTopRight>
+          <IconButton onClick={handleClickExport}>download</IconButton>
+        </FixedTopRight>
+
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <Title2>Instagram Content Gen</Title2>
+          <DarkmodeToggle></DarkmodeToggle>
+          <div>
+            <Button
+              color="black"
+              width="100%"
+              type="fill"
+              display="flex"
+              onClick={() => setIsOpen(false)}
+            >
+              모달 닫기
+            </Button>
+          </div>
+        </Modal>
+      </PaddingTop>
     </>
   );
 }
